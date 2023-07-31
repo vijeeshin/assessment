@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SelectBox } from "./components/SelectBox";
 import Box from "./components/Box";
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import Link from "./components/Link";
 import { insertDataToServer, saveLocalBodyDetailsData } from "./redux/actions";
@@ -27,6 +27,7 @@ import {
   Button,
 } from "react-bootstrap";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 function App() {
   const [districts, setDistricts] = React.useState([]);
@@ -42,6 +43,24 @@ function App() {
   const [zones, setZones] = React.useState([]);
   const [wards, setWards] = React.useState([]);
   const [villages, setVillages] = React.useState([]);
+
+  const localBodyFormTwo = useSelector((state) => state.localBodyFormTwo);
+
+  useEffect(() => {
+    if (
+      localBodyFormTwo.isCompleted &&
+      localBodyFormTwo.hasError &&
+      !localBodyFormTwo.isLoading
+    ) {
+      alert(localBodyFormTwo.message);
+    } else if (
+      localBodyFormTwo.isCompleted &&
+      !localBodyFormTwo.hasError &&
+      !localBodyFormTwo.isLoading
+    ) {
+      alert(localBodyFormTwo.message);
+    }
+  }, [localBodyFormTwo]);
 
   /* The above code is using the `useEffect` hook in React to perform some actions when the component is
  mounted. It is calling three functions: `getDistricts()`, `getLocalBodyTypes()`, and
@@ -203,6 +222,7 @@ updated values of "district" and "localBodyType". */
 
   // If form is valid then to pass data to server using redux action
   const onSubmit = (data) => {
+    console.log(data);
     insertDataToServer(data);
   };
   // To clear the data while unmount
@@ -370,7 +390,7 @@ updated values of "district" and "localBodyType". */
         </Col>
         <Col>
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
               <Accordion
                 title={"Local Body Details"}
                 onClosed={() => onLocalBoadyAccordianClosedHandler()}

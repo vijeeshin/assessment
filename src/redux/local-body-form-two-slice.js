@@ -8,10 +8,10 @@ const initialState = {
   message: "",
 };
 
- const submitFormData = createAsyncThunk(
+const submitFormData = createAsyncThunk(
   "localBodyFormTwo/submitFormData",
-
   async (data) => {
+    console.log(data);
     const response = await axios.request({
       url: `http://127.0.0.1:3333/form2/submit`,
       method: `POST`,
