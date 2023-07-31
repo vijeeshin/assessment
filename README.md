@@ -10,7 +10,11 @@ Application has two parts
 
 https://adonisjs.com/
 
-To install dependencies 'cd mock-server' and run 'npm install'
+To install dependencies `cd mock-server` and run `npm install`
+
+To run Mock Server
+
+  `node ace serve --watch`
 
 
 ## Available Scripts
@@ -19,3 +23,4 @@ In the project directory, you can run:
 
 ### `npm start`
 
+To run application run `npm start`
