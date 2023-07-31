@@ -45,7 +45,7 @@ function App() {
   const [villages, setVillages] = React.useState([]);
 
   const localBodyFormTwo = useSelector((state) => state.localBodyFormTwo);
-console.log(localBodyFormTwo)
+
   useEffect(() => {
     if (
       localBodyFormTwo.isComepleted &&
@@ -220,7 +220,7 @@ updated values of "district" and "localBodyType". */
 
   // If form is valid then to pass data to server using redux action
   const onSubmit = (data) => {
-    console.log(data);
+
     insertDataToServer(data);
   };
   // To clear the data while unmount
@@ -341,7 +341,7 @@ updated values of "district" and "localBodyType". */
     name: "surveyInfo",
   });
 
-  console.log(errors);
+
 
   return (
     <Container fluid>
