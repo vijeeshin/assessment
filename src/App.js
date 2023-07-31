@@ -43,12 +43,22 @@ function App() {
   const [wards, setWards] = React.useState([]);
   const [villages, setVillages] = React.useState([]);
 
+  /* The above code is using the `useEffect` hook in React to perform some actions when the component is
+ mounted. It is calling three functions: `getDistricts()`, `getLocalBodyTypes()`, and
+ `getOccupancyNature()`. These functions are likely responsible for fetching data from an API or
+ performing some other asynchronous operation. The `[]` as the second argument to `useEffect`
+ ensures that these functions are only called once, when the component is initially mounted. */
   React.useEffect(() => {
     getDistricts();
     getLocalBodyTypes();
     getOccupancyNature();
   }, []);
 
+  /* The above code is defining a JavaScript object called `defaultValues`. This object contains various
+properties with default values assigned to them. These properties include `district`,
+`localBodyType`, `localBodyName`, `zonalOffice`, `wardNo`, `permitNumber`, `permitDate`,
+`prevPermitLink`, `occupancyNo`, `occupancyDate`, `isPartiallyCompleted`, `occupancyNature`, and
+`surveyInfo`. These are the default values for use Formm hook */
   const defaultValues = {
     district: null,
     localBodyType: null,
@@ -56,7 +66,7 @@ function App() {
     zonalOffice: null,
     wardNo: null,
     permitNumber: "",
-    permitDate:null,
+    permitDate: null,
     prevPermitLink: "",
     occupancyNo: "",
     occupancyDate: null,
@@ -71,6 +81,7 @@ function App() {
     ],
   };
 
+  /** Validtion schema for yup */
   const validationSchema = Yup.object().shape({
     district: Yup.object().required("District name is required"),
     localBodyType: Yup.object().required("Local body type is required"),
@@ -103,6 +114,7 @@ function App() {
       .required("Array of Objects is required"),
   });
 
+  /** methods for useForm hook*/
   const methods = useForm({
     defaultValues: defaultValues,
     mode: "onSubmit",
@@ -128,13 +140,18 @@ function App() {
       isValid,
     },
   } = methods;
-
+  /** Observing form objects to make requiest */
   const district = watch("district");
   const localBodyType = watch("localBodyType");
   const localBodyName = watch("localBodyName");
   const zonalOffice = watch("zonalOffice");
   const values = watch();
 
+  /* React useEffect hook that is triggered whenever the values of "district" and
+"localBodyType" change. Inside the useEffect, it resets the values of "localBodyName", "wardNo", and
+"zonalOffice" to null using the setValue function. It also sets the value of
+"isLocalBodyDetailsFilled" to false. Finally, it calls the "getLocalBodyName" function with the
+updated values of "district" and "localBodyType". */
   React.useEffect(() => {
     if (district && localBodyType) {
       setValue("localBodyName", null);
@@ -144,6 +161,8 @@ function App() {
       getLocalBodyName(district, localBodyType);
     }
   }, [district, localBodyType]);
+  /*  React useEffect hook that is triggered whenever the value of `localBodyName`
+ changes. Inside the useEffect, it performs the following actions: */
   React.useEffect(() => {
     if (localBodyName) {
       setValue("surveyInfo", [
@@ -158,10 +177,13 @@ function App() {
       setIsLocalBodyDetailsFilled(false);
       getZone(localBodyName.id);
       setVillages([]);
-
       getVillages(localBodyName.id);
     }
   }, [localBodyName]);
+  /* React useEffect hook that is triggered whenever the value of `zonalOffice`
+  changes. Inside the useEffect, it checks if `localBodyName` is truthy. If it is, it sets the value
+  of "wardNo" to null, sets `isLocalBodyDetailsFilled` to false, and calls the `getZone` function
+  with the `id` property of `localBodyName`. */
   React.useEffect(() => {
     if (localBodyName) {
       setValue("wardNo", null);
@@ -169,6 +191,9 @@ function App() {
       getZone(localBodyName.id);
     }
   }, [zonalOffice]);
+
+  /*  React useEffect hook that is triggered whenever the value of the `zonalOffice`
+ variable changes. */
   React.useEffect(() => {
     if (zonalOffice) {
       setIsLocalBodyDetailsFilled(false);
@@ -176,10 +201,11 @@ function App() {
     }
   }, [zonalOffice]);
 
+  // If form is valid then to pass data to server using redux action
   const onSubmit = (data) => {
     insertDataToServer(data);
   };
-
+  // To clear the data while unmount
   React.useEffect(() => {
     return () => {
       reset();
@@ -259,7 +285,7 @@ function App() {
       })
       .catch((err) => {});
   };
-
+  /** To check whether local body card is completed or not  */
   const onLocalBoadyAccordianClosedHandler = () => {
     const values = getValues();
     setIsLocalBodyDetailsFilled(
@@ -270,7 +296,7 @@ function App() {
         values.zonalOffice
     );
   };
-
+  /** To check whether permit and occupancy card is completed or not  */
   const onPermitAndOccupancyAccordianClosedHandler = () => {
     const values = getValues();
     setIsPermitDetailsFilled(
@@ -282,7 +308,7 @@ function App() {
         values.prevPermitLink
     );
   };
-
+  /** To check whether survey details card is completed or not  */
   const onSurveyDetailsCompleted = () => {
     const values = getValues();
     setIsSurveyDetailsCompleted(
@@ -299,45 +325,32 @@ function App() {
 
   return (
     <Container fluid>
-      <Navbar expand="lg" className="bg-body-tertiary">
+      <Navbar expand="lg" className="bg-body-tertiary ms-auto">
         <Container fluid>
           <Navbar.Brand href="#home">Logo</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-          <Row>
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Another action
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">
-                    Something
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-            </Navbar.Collapse>
-          </Row>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="#home">Search</Nav.Link>
+              <Nav.Link href="#link">Notification</Nav.Link>
+              <NavDropdown title="Vijeesh Kumar" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
       <Row style={{ backgroundColor: "#0E327B" }}>
         <Breadcrumb>
-          <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-            Library
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Data</Breadcrumb.Item>
+          <Breadcrumb.Item href="#">Tax</Breadcrumb.Item>
+          <Breadcrumb.Item href="#">Tax Property</Breadcrumb.Item>
+          <Breadcrumb.Item href="#">Form 2</Breadcrumb.Item>
         </Breadcrumb>
       </Row>
 
-      <div className="app-body">
-        <div className="left-menu">
+      <Row className="body-row">
+        <Col md={2}>
           <Accordion title={"Application"} onClosed={() => {}}>
             <Column>
               <Link
@@ -354,9 +367,8 @@ function App() {
               />
             </Column>
           </Accordion>
-        </div>
-
-        <div className="right-menu">
+        </Col>
+        <Col>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Accordion
@@ -524,15 +536,15 @@ function App() {
                       <Button type="submit">Submit</Button>
                     </Col>
                     <Col>
-                      <Button onClick={()=>reset()}>Clear</Button>
+                      <Button onClick={() => reset()}>Clear</Button>
                     </Col>
                   </Row>
                 </Col>
               </Row>
             </form>
           </FormProvider>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </Container>
   );
 }
