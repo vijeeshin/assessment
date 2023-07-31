@@ -220,7 +220,9 @@ updated values of "district" and "localBodyType". */
 
   // If form is valid then to pass data to server using redux action
   const onSubmit = (data) => {
-
+    onLocalBoadyAccordianClosedHandler();
+    onPermitAndOccupancyAccordianClosedHandler();
+    onSurveyDetailsCompleted();
     insertDataToServer(data);
   };
   // To clear the data while unmount
