@@ -33,13 +33,13 @@ const localBodyFormTwoSlice = createSlice({
       .addCase(submitFormData.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isComepleted = true;
-        state.message = action.payload.message;
+        state.message = action.payload.data.message;
         state.hasError = false;
       })
       .addCase(submitFormData.rejected, (state, action) => {
         state.isLoading = false;
         state.isComepleted = true;
-        state.message = action.payload.message;
+        state.message = "Server Error"
         state.hasError = true;
       });
   },

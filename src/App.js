@@ -45,16 +45,16 @@ function App() {
   const [villages, setVillages] = React.useState([]);
 
   const localBodyFormTwo = useSelector((state) => state.localBodyFormTwo);
-
+console.log(localBodyFormTwo)
   useEffect(() => {
     if (
-      localBodyFormTwo.isCompleted &&
+      localBodyFormTwo.isComepleted &&
       localBodyFormTwo.hasError &&
       !localBodyFormTwo.isLoading
     ) {
       alert(localBodyFormTwo.message);
     } else if (
-      localBodyFormTwo.isCompleted &&
+      localBodyFormTwo.isComepleted &&
       !localBodyFormTwo.hasError &&
       !localBodyFormTwo.isLoading
     ) {
@@ -123,9 +123,7 @@ properties with default values assigned to them. These properties include `distr
     surveyInfo: Yup.array()
       .of(
         Yup.object().shape({
-          villageName: Yup.object().shape({
-            id: Yup.string().required("Village Name is required"),
-          }),
+          villageName: Yup.object().required("Village Name is required"),
           surveyNumber: Yup.string().required("Survey Number is required"),
           reSurveyNumber: Yup.string().required("Re-Survey Number is required"),
         })
@@ -342,6 +340,8 @@ updated values of "district" and "localBodyType". */
     control,
     name: "surveyInfo",
   });
+
+  console.log(errors);
 
   return (
     <Container fluid>
