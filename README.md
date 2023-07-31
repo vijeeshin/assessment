@@ -25,4 +25,8 @@ In the project directory, you can run:
 
 To run application run `npm start`
 
+### 'API URl`
+
+Routes can be found in mockserver/ start/ routes
+
 
