@@ -115,7 +115,7 @@ properties with default values assigned to them. These properties include `distr
       .typeError("Value must be a number")
       .min(10, "Value must be at least 10")
       .required("Value is required"),
-    occupancyDate: Yup.date().required(),
+    occupancyDate: Yup.date().required("Occupancy Date is required"),
     isPartiallyCompleted: Yup.boolean().required(),
     occupancyNature: Yup.object().required("Occupancy Nature is required"),
     surveyInfo: Yup.array()
