@@ -109,8 +109,8 @@ properties with default values assigned to them. These properties include `distr
       .typeError("Value must be a number")
       .min(10, "Value must be at least 10")
       .required("Value is required"),
-    permitDate: Yup.date().required(),
-    prevPermitLink: Yup.string().required(),
+    permitDate: Yup.date().required("Permit Date is required"),
+    prevPermitLink: Yup.string().required("Previous Permit Link is required"),
     occupancyNo: Yup.number()
       .typeError("Value must be a number")
       .min(10, "Value must be at least 10")
