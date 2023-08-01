@@ -140,5 +140,5 @@ Route.get('/villages/:localBodyId', async (ctx) => {
 })
 
 Route.post('/form2/submit', async (ctx) => {
-  return ctx.response.json({ message: 'Data submitted successfully' })
+  return ctx.response.json({ message: 'Data submitted successfully', data:ctx.request.body() });
 })

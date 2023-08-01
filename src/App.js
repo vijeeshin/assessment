@@ -1,19 +1,15 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Accordion from "./components/Accordion";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SelectBox } from "./components/SelectBox";
-import Box from "./components/Box";
 import React, { useEffect } from "react";
-import axios from "axios";
 import Link from "./components/Link";
-import { insertDataToServer, saveLocalBodyDetailsData } from "./redux/actions";
+import { insertDataToServer } from "./redux/actions";
 import { TextInput } from "./components/TextInput";
 import { FormDatePicker } from "./components/DataPicker";
 import { CheckBox } from "./components/CheckBox";
-import { Error } from "./components/Error";
 import Column from "./components/Column";
 
 import {
@@ -28,6 +24,7 @@ import {
 } from "react-bootstrap";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import axiosInstance from "./utils/axios";
 
 function App() {
   const [districts, setDistricts] = React.useState([]);
@@ -52,6 +49,7 @@ function App() {
       localBodyFormTwo.hasError &&
       !localBodyFormTwo.isLoading
     ) {
+ 
       alert(localBodyFormTwo.message);
     } else if (
       localBodyFormTwo.isComepleted &&
@@ -233,8 +231,8 @@ updated values of "district" and "localBodyType". */
   }, []);
 
   const getDistricts = async () => {
-    await axios
-      .get("http://127.0.0.1:3333/districts")
+    await axiosInstance
+      .get("/districts")
       .then((res) => res.data)
       .then((data) => {
         setDistricts(data);
@@ -242,8 +240,8 @@ updated values of "district" and "localBodyType". */
       .catch((err) => {});
   };
   const getLocalBodyTypes = async () => {
-    await axios
-      .get("http://127.0.0.1:3333/local_body_type")
+    await axiosInstance
+      .get("/local_body_type")
       .then((res) => res.data)
       .then((data) => {
         setLocalBodyTypes(data);
@@ -252,9 +250,9 @@ updated values of "district" and "localBodyType". */
   };
   const getLocalBodyName = async (district, localBodyType) => {
     if (district && localBodyType) {
-      await axios
+      await axiosInstance
         .get(
-          `http://127.0.0.1:3333/local_body_name/${district.id}/${localBodyType.id}`
+          `/local_body_name/${district.id}/${localBodyType.id}`
         )
         .then((res) => res.data)
         .then((data) => {
@@ -265,8 +263,8 @@ updated values of "district" and "localBodyType". */
   };
   const getZone = async (id) => {
     if (id) {
-      await axios
-        .get(`http://127.0.0.1:3333/zones/${id}`)
+      await axiosInstance
+        .get(`/zones/${id}`)
         .then((res) => res.data)
         .then((data) => {
           setZones(data);
@@ -276,8 +274,8 @@ updated values of "district" and "localBodyType". */
   };
   const getWard = async (id) => {
     if (id) {
-      await axios
-        .get(`http://127.0.0.1:3333/wards/${id}`)
+      await axiosInstance
+        .get(`/wards/${id}`)
         .then((res) => res.data)
         .then((data) => {
           setWards(data);
@@ -287,8 +285,8 @@ updated values of "district" and "localBodyType". */
   };
   const getVillages = async (id) => {
     if (id) {
-      await axios
-        .get(`http://127.0.0.1:3333/villages/${id}`)
+      await axiosInstance
+        .get(`/villages/${id}`)
         .then((res) => res.data)
         .then((data) => {
           setVillages(data);
@@ -297,8 +295,8 @@ updated values of "district" and "localBodyType". */
     }
   };
   const getOccupancyNature = async () => {
-    await axios
-      .get(`http://127.0.0.1:3333/occupancy-nature`)
+    await axiosInstance
+      .get(`/occupancy-nature`)
       .then((res) => res.data)
       .then((data) => {
         setOccupancyNatures(data);
@@ -363,8 +361,8 @@ updated values of "district" and "localBodyType". */
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Row style={{ backgroundColor: "#0E327B" }}>
-        <Breadcrumb>
+      <Row >
+        <Breadcrumb className="bread">
           <Breadcrumb.Item href="#">Tax</Breadcrumb.Item>
           <Breadcrumb.Item href="#">Tax Property</Breadcrumb.Item>
           <Breadcrumb.Item href="#">Form 2</Breadcrumb.Item>
