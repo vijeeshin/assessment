@@ -29,4 +29,6 @@ To run application run `npm start`
 
 Routes can be found in mockserver/ start/ routes
 
+base_url:http://127.0.0.1:3333/
+
 
